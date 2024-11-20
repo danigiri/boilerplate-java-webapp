@@ -17,9 +17,10 @@
 		<maven.compiler.release>21</maven.compiler.release>
 
 		<!-- JETTY PROPERTIES -->
-		<jetty-version>12.0.14</jetty-version>
-		<jetty-http-port>8980</jetty-http-port>
-		<jetty-stop-port>8981</jetty-stop-port>
+		<jetty-version>12.0.15</jetty-version>
+		<servlet-api-version>6.0.0</servlet-api-version>
+		<jetty-http-port>8080</jetty-http-port>
+		<jetty-stop-port>8091</jetty-stop-port>
 		<jetty-context-path>/</jetty-context-path>
 
 		<!-- DEPENDENCY INJECTION: DAGGER2 -->
@@ -40,10 +41,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+		<!-- LOGGING -->
+		<slf4j-api-version>2.0.13</slf4j-api-version>
+
 		<!-- GIT OPTIONS -->
 		<scm.host_>github.com</scm.host_>
 		<developer.id_>danigiri</developer.id_>
-
 	</properties>
 
 	<scm>
@@ -56,6 +59,15 @@
 
 	<build>
 
+
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+				<excludes> <!-- ignore code formatting -->
+					<exclude>jdt-codeformat.xml</exclude>
+				</excludes>
+			</resource>
+		</resources>
 		<plugins>
 
 			<!-- ////////// COMPILE PHASE /////////////////// -->
@@ -70,7 +82,8 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin><!-- java compilation options -->
+			<plugin><!--
+				java compilation options -->
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.13.0</version>
 				<configuration>
@@ -87,6 +100,7 @@
 						target/generated-sources/annotations</generatedSourcesDirectory>
 				</configuration>
 			</plugin>
+
 			<!-- ////////// TEST PHASE ////////////////////// -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -100,6 +114,127 @@
 					</excludes>
 					<argLine>-javaagent:${org.mockito:mockito-core:jar}</argLine>
 				</configuration>
+			</plugin>
+
+			<!-- ////////// PACKAGE PHASE /////////////////// -->
+			<plugin>	<!--
+				mvn package war:war install -DarchiveClasses=true
+				-DattachClasses=true -DskipITs -DskipTests=true -Djetty.skip -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.4.0</version>
+				<configuration>
+					<!-- additional  resources to add -->
+					<webResources>
+						<!--resource>
+							<directory>
+								${project.build.outputDirectory}/test-resources</directory>
+							<targetPath>target/test-classes/test-resources</targetPath>
+						</resource-->
+					</webResources>
+					<!-- creates a jar with the classes and attaches an artifact -->
+					<attachClasses>true</attachClasses>
+				</configuration>
+			</plugin>
+
+			<!-- ////////// INTEGRATION-TEST PHASES ///////// -->
+			<plugin>
+				<groupId>org.eclipse.jetty.ee10</groupId>
+				<artifactId>jetty-ee10-maven-plugin</artifactId>
+				<version>${jetty-version}</version>
+				<configuration>
+					<httpConnector>
+						<port>${jetty-http-port}</port>
+					</httpConnector>
+					<stopPort>${jetty-stop-port}</stopPort>
+					<scan>1</scan>
+					<stopKey>STOP</stopKey>
+					<webApp>
+						<contextPath>${jetty-context-path}</contextPath>
+						<!-- use one of those override default src/main/webapp
+						for static content -->
+						<!--<baseResource></baseResource>-->
+						<!--resourceBases>
+								<resourceBase>${project.build.outputDirectory}</resourceBase>
+						</resourceBases-->
+					</webApp>
+				</configuration>
+				<executions>
+					<!-- start jetty when target is integration testing -->
+					<execution>
+						<id>start-jetty-integration-test</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>	<!-- stop jetty when completed integration
+						testing-->
+						<id>stop-jetty</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+						<configuration>
+							<stopKey>STOP</stopKey>
+							<stopPort>${jetty-stop-port}</stopPort>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- failsafe will run all int tests, and check outcome in
+			verify phase -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>3.2.5</version>
+				<configuration>
+					<systemPropertyVariables>
+						<TMP_FOLDER>
+							${project.build.directory}/integration-tests-tmp</TMP_FOLDER>
+					</systemPropertyVariables>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<!--goal>verify</goal-->
+						</goals>
+						<configuration>
+							<includes>
+								<include>**/*IntTest*</include>
+								<include>**/*UITest*</include>
+								<include>**/*ComponentTest*</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<!-- ////////// VERIFY PHASE //////////////////// -->
+			<!-- code formatting -->
+			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>${spotless.version}</version>
+				<configuration>
+					<java>
+						<eclipse>
+							<file>
+								${project.basedir}/src/main/resources/jdt-codeformat.xml</file>
+						</eclipse>
+						<removeUnusedImports />
+					</java>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>	<!-- this will run when verify is invoked -->
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -118,6 +253,40 @@
 			<artifactId>mockito-core</artifactId>
 			<version>${mockito-version}</version>
 			<scope>test</scope>
+		</dependency>
+
+
+		<!-- JETTY RUNTIME -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>${jetty-version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>${servlet-api-version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- HTTP CLIENT -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-client</artifactId>
+			<version>${jetty-version}</version>
+		</dependency>
+
+		<!-- logging -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-slf4j-impl</artifactId>
+			<version>${jetty-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j-api-version}</version>
 		</dependency>
 
 	</dependencies>

@@ -1,22 +1,22 @@
 package cat.calidos.boilerplate.model;
 
-
 public class HelloWorld {
 
 public String greeting() {
 	return "instance world";
 }
 
+
 public static String staticGreeting() {
 	return "static world";
 }
+
 
 public String greetingWithParam(String what) {
 	return what;
 }
 
 }
-
 
 /*
  * Copyright 2024 Daniel Giribet
@@ -31,4 +31,3 @@ public String greetingWithParam(String what) {
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-
