@@ -1,0 +1,148 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>cat.calidos.boilerplate</groupId>
+	<artifactId>boilerplate-java-webapp</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>Boilerplate java webapp - NAME HERE</name>
+	<description>ENTER DESCRIPTION HERE</description>
+	<inceptionYear>2024</inceptionYear>
+
+
+	<properties>
+		<!-- JAVA VERSION -->
+		<maven.compiler.release>21</maven.compiler.release>
+
+		<!-- JETTY PROPERTIES -->
+		<jetty-version>12.0.14</jetty-version>
+		<jetty-http-port>8980</jetty-http-port>
+		<jetty-stop-port>8981</jetty-stop-port>
+		<jetty-context-path>/</jetty-context-path>
+
+		<!-- DEPENDENCY INJECTION: DAGGER2 -->
+		<dagger-2-version>2.51.1</dagger-2-version>
+
+		<!-- TEMPLATING -->
+		<freemarker-version>2.3.33</freemarker-version>
+
+		<!-- JSON HANDLING -->
+		<jackson-2-version>2.17.2</jackson-2-version>
+
+		<!-- TESTING -->
+		<jupiter-version>5.11.3</jupiter-version>
+		<mockito-version>5.14.2</mockito-version>
+
+		<!-- SOURCE FORMATTING -->
+		<spotless.version>2.44.0.BETA2</spotless.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!-- GIT OPTIONS -->
+		<scm.host_>github.com</scm.host_>
+		<developer.id_>danigiri</developer.id_>
+
+	</properties>
+
+	<scm>
+		<connection>scm:git:git@${scm.host_}:${developer.id_}/morfeu.git</connection>
+		<url>scm:git:git@${scm.host_}:${developer.id_}/${project.artifactId}.git</url>
+		<developerConnection>
+			scm:git:git@${scm.host_}:${developer.id_}/${project.artifactId}.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
+	<build>
+
+		<plugins>
+
+			<!-- ////////// COMPILE PHASE /////////////////// -->
+			<plugin> <!-- so we extrapolate properties for mockito argline -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>properties</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin><!-- java compilation options -->
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<configuration>
+					<!-- DAGGER2 -->
+					<annotationProcessorPaths>
+						<path>
+							<groupId>com.google.dagger</groupId>
+							<artifactId>dagger-compiler</artifactId>
+							<version>${dagger-2-version}</version>
+						</path>
+					</annotationProcessorPaths>
+					<!-- DAGGER2 -->
+					<generatedSourcesDirectory>
+						target/generated-sources/annotations</generatedSourcesDirectory>
+				</configuration>
+			</plugin>
+			<!-- ////////// TEST PHASE ////////////////////// -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.2.5</version>
+				<configuration>
+					<excludes>	<!-- SKIP IN UNIT TESTING -->
+						<exclude>**/*IntTest*</exclude>
+						<exclude>**/*UITest*</exclude>
+						<exclude>**/*ComponentTest*</exclude>
+					</excludes>
+					<argLine>-javaagent:${org.mockito:mockito-core:jar}</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+
+		<!-- UNIT TESTING -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${jupiter-version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito-version}</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<comments>Copyright (C) 2024 Daniel Giribet</comments>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>danigiri</id>
+			<name>Daniel Giribet</name>
+			<email>dani AT calidos DOT cat</email>
+			<url>https://dani.calidos.cat</url>
+			<roles>
+				<role>creator</role>
+				<role>developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
+
+
+</project>
