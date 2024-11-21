@@ -3,6 +3,8 @@ package cat.calidos.boilerplate.model;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.time.Duration;
+
 import org.junit.jupiter.api.Test;
 
 import org.mockito.MockedStatic;
@@ -12,8 +14,11 @@ public class HelloWorldTest {
 
 @Test
 public void testGreeting() {
-	assertEquals("static world", HelloWorld.staticGreeting());
-	assertEquals("instance world", new HelloWorld().greeting());
+	assertEquals("hello static world", HelloWorld.staticGreeting());
+	assertEquals("hello instance world", new HelloWorld().greeting());
+	assertEquals("hello param world", new HelloWorld().greetingWithParam("param world"));
+	var duration = Duration.ofSeconds(1);
+	assertEquals("slept for 1 seconds... hello world", new HelloWorld().sleepAndGreet(duration));
 }
 
 

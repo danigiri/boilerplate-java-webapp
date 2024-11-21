@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 
-public class HelloWorldServletIntTest {
+public class HelloWorldAsyncServletIntTest {
 
 private static HttpClient httpClient;
 
@@ -31,7 +31,7 @@ public void testGreeting() throws Exception {
 
 	var response = get();
 	assertEquals(200, response.status());
-	assertEquals("hello static world", response.content().trim());
+	assertEquals("slept for 1 seconds... hello world", response.content().trim());
 
 }
 
@@ -40,16 +40,14 @@ private record HelloWorldServletIntTestResponse(String content, int status) {
 
 private static HelloWorldServletIntTestResponse get() throws Exception {
 
-	ContentResponse response = httpClient.GET("http://localhost:8080/hello");
+	ContentResponse response = httpClient.GET("http://localhost:8080/async-hello?seconds=1");
 	String content = response.getContentAsString();
 	int status = response.getStatus();
 
-	// ContentResponse response = httpClient.POST("http://domain.com/entity/1")
-	// .param("p", "value")
-	// .send();
 	return new HelloWorldServletIntTestResponse(content, status);
 
 }
+
 
 }
 

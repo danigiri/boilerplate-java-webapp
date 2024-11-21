@@ -11,10 +11,21 @@ Upgrade depdencies (optional):
 
 #### Compilation
 
+```shell
+mvn compile
+```
+
 
 #### Testing
+
 ```shell
 mvn test
+```
+
+Manually testing async servlet:
+
+```shell
+https://www.hackerearth.com/practice/notes/asynchronous-servlets-in-java/
 ```
 
 
@@ -52,3 +63,4 @@ Defaults of jetty:run:
 - https://jetty.org/docs/jetty/12/index.html
 - https://jetty.org/docs/jetty/12/programming-guide/client/index.html
 - https://jakarta.ee/learn/docs/jakartaee-tutorial/current/web/webapp/webapp.html
+- https://www.hackerearth.com/practice/notes/asynchronous-servlets-in-java/
