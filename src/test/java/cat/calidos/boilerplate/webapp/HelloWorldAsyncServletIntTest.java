@@ -27,27 +27,31 @@ public static void beforeAll() throws Exception {
 
 
 @Test
-public void testGreeting() throws Exception {
-
-	var response = get();
+public void testAsyncGreeting() throws Exception {
+	var response = get(1);
 	assertEquals(200, response.status());
 	assertEquals("slept for 1 seconds... hello world", response.content().trim());
+}
+
+
+@Test
+public void testAsyncGreetingWithTimeout() throws Exception {
+	var response = get(3); // default request timeout is 2 sec
+	assertEquals(200, response.status());
+	assertEquals("hello timed out world", response.content().trim());
 
 }
 
 private record HelloWorldServletIntTestResponse(String content, int status) {
 };
 
-private static HelloWorldServletIntTestResponse get() throws Exception {
-
-	ContentResponse response = httpClient.GET("http://localhost:8080/async-hello?seconds=1");
+private static HelloWorldServletIntTestResponse get(int secs) throws Exception {
+	ContentResponse response = httpClient.GET("http://localhost:8080/async-hello?seconds=" + secs);
 	String content = response.getContentAsString();
 	int status = response.getStatus();
 
 	return new HelloWorldServletIntTestResponse(content, status);
-
 }
-
 
 }
 

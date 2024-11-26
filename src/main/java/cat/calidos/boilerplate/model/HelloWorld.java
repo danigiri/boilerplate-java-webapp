@@ -21,13 +21,16 @@ public String greetingWithParam(String what) {
 
 
 public String sleepAndGreet(Duration duration) {
+	long start = System.currentTimeMillis();
+	var interrupted = false;
 	try {
 		Thread.sleep(duration);
 	} catch (InterruptedException e) {
-		e.printStackTrace();
-		return "slept but was interrupted and hello world";
+		interrupted = true;
 	}
-	return "slept for " + duration.toSeconds() + " seconds... hello world";
+	long end = System.currentTimeMillis();
+	Duration howLong = interrupted ? Duration.ofMillis(end-start) : duration;
+	return "slept for " + howLong.toSeconds() + " seconds... hello world";
 }
 
 }

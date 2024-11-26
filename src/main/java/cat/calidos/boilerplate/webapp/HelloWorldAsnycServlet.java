@@ -1,6 +1,7 @@
 package cat.calidos.boilerplate.webapp;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.AsyncContext;
+import jakarta.servlet.AsyncEvent;
+import jakarta.servlet.AsyncListener;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -21,13 +24,17 @@ import cat.calidos.boilerplate.model.HelloWorld;
 
 
 /**
+ * Overall servlet, change HelloAsyncRequestHandler to provide custom logic and the
+ * HelloAsyncListener to do timeout logic.
+ * 
  * @author daniel giribet
  *//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class HelloWorldAsnycServlet extends HttpServlet {
 
 protected final static Logger log = LoggerFactory.getLogger(HelloWorldAsnycServlet.class);
 
-private static final int TASK_TERMINATION_TIMEOUT = 1;
+private static final int	SHUTDOWN_TIMEOUT_SEC		= 1;
+private static final int	DEFAULT_REQUEST_TIMEOUT_MS	= 2000;
 
 private ExecutorService	executorService;
 private int				timeout;
@@ -36,9 +43,8 @@ private int				timeout;
 public void init(ServletConfig config) throws ServletException {
 	super.init(config);
 
-	// the fixed thread pool includes a unbounded queue
 	this.executorService = Executors.newFixedThreadPool(2);
-	this.timeout = 10000;
+	this.timeout = DEFAULT_REQUEST_TIMEOUT_MS;
 }
 
 
@@ -48,11 +54,20 @@ protected void doGet(	HttpServletRequest req,
 		throws ServletException, IOException {
 
 	final AsyncContext context = req.startAsync(req, resp);
-	context.setTimeout(timeout);
+	context.addListener(new HelloAsyncListener());
+	context.setTimeout(timeout); // this will interrupt the thread running the runnable
 	// async context handling modifies the path info, and adds back the servlet prefix, uncomment
 	// this to keep it accessible later
 	// req.setAttribute(ORIGINAL_PATH_INFO, req.getPathInfo());
-	Future<?> future = executorService.submit(new AsyncRequestHandler(context));
+
+	// the fixed thread pool itself includes a unbounded queue, which means handlers will get queued
+	// and de-queued automagically
+	log
+			.debug(
+					"Handling async request '{}' with context '{}'",
+					req.getPathInfo(),
+					context.hashCode());
+	Future<?> future = executorService.submit(new HelloAsyncRequestHandler(context));
 }
 
 
@@ -64,14 +79,12 @@ protected void doPost(	HttpServletRequest req,
 }
 
 
-
-
 @Override
 public void destroy() {
 	super.destroy();
 	executorService.shutdown();
 	try {
-		if (!executorService.awaitTermination(TASK_TERMINATION_TIMEOUT, TimeUnit.SECONDS)) {
+		if (!executorService.awaitTermination(SHUTDOWN_TIMEOUT_SEC, TimeUnit.SECONDS)) {
 			log.error("Did not finish awaiting the completion of pending tasks, forcing shutdown");
 			executorService.shutdownNow();
 		}
@@ -82,16 +95,13 @@ public void destroy() {
 	}
 }
 
+private final class HelloAsyncRequestHandler implements Runnable {
 
-
-
-private final class AsyncRequestHandler implements Runnable {
-
-protected final static Logger log = LoggerFactory.getLogger(AsyncRequestHandler.class);
+protected final static Logger log = LoggerFactory.getLogger(HelloAsyncRequestHandler.class);
 
 private AsyncContext context;
 
-private AsyncRequestHandler(AsyncContext context) {
+private HelloAsyncRequestHandler(AsyncContext context) {
 	this.context = context;
 }
 
@@ -102,12 +112,11 @@ public void run() {
 	HttpServletRequest req = (HttpServletRequest) context.getRequest();
 	HttpServletResponse resp = (HttpServletResponse) context.getResponse();
 	String secondsParam = req.getParameter("seconds");
-	secondsParam = secondsParam==null ? "1" : secondsParam;
+	secondsParam = secondsParam == null ? "1" : secondsParam;
 	int seconds;
 	try {
 		seconds = Integer.parseInt(secondsParam);
-	}
-	catch (NumberFormatException e) {
+	} catch (NumberFormatException e) {
 		log.warn("Wrong seconds param '{}', using default", secondsParam);
 		seconds = 1;
 	}
@@ -119,6 +128,38 @@ public void run() {
 		e.printStackTrace();
 	}
 	context.complete();
+}
+
+}
+
+private class HelloAsyncListener implements AsyncListener {
+
+protected final static Logger log = LoggerFactory.getLogger(HelloAsyncListener.class);
+
+@Override
+public void onComplete(AsyncEvent event) throws IOException {
+}
+
+
+@Override
+public void onTimeout(AsyncEvent event) throws IOException {
+	AsyncContext context = event.getAsyncContext();
+	HttpServletResponse response = (HttpServletResponse) context.getResponse();
+	String path = ((HttpServletRequest) context.getRequest()).getPathInfo();
+	log.error("Request '{}' with context '{}' timeout", path, context.hashCode());
+	PrintWriter writer = response.getWriter();
+	writer.write(new HelloWorld().greetingWithParam("timed out world"));
+	writer.flush();
+}
+
+
+@Override
+public void onError(AsyncEvent event) throws IOException {
+}
+
+
+@Override
+public void onStartAsync(AsyncEvent event) throws IOException {
 }
 
 }

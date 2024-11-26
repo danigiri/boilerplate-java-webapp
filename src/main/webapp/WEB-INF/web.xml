@@ -15,5 +15,15 @@
 		<servlet-name>Hello</servlet-name>
 		<url-pattern>/hello/*</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>AsyncHello</servlet-name>
+		<servlet-class>cat.calidos.boilerplate.webapp.HelloWorldAsnycServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AsyncHello</servlet-name>
+		<url-pattern>/async-hello/*</url-pattern>
+	</servlet-mapping>
 
 </web-app>
