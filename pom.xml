@@ -62,11 +62,11 @@
 
 		<resources>
 			<resource>
-				<directory>${project.basedir}/src/main/resources</directory>
-				<excludes> <!-- ignore code formatting and do not copy it -->
+				<directory>src/main/resources</directory>
+				<excludes> <!-- not copied, not filtered --> 
 					<exclude>jdt-codeformat.xml</exclude>
-					<!-- we do not filter these, though we could-->
-					<exclude>docker</exclude>
+					<exclude>docker/**</exclude>
+					<exclude>jetty/**</exclude>
 				</excludes>
 			</resource>
 		</resources>
