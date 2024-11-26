@@ -55,7 +55,7 @@ RUN mkdir -p ${JETTY_HOME}
 RUN curl ${JETTY_URL} | tar zxf - -C ${JETTY_HOME} --strip-components 1
 
 # creating jetty base with configuration files
-COPY --from=build ./target/classes/jetty ${JETTY_BASE}
+COPY --from=build ./src/main/resources/jetty ${JETTY_BASE}
 # create bunch of folders that jetty will need to run and adding files
 RUN mkdir -p ${JETTY_BASE}/webapps ${JETTY_BASE}/resources ${JETTY_BASE}/lib/ext ${JETTY_BASE}/logs
 COPY --from=build ./target/classes/jetty-logging.properties /${JETTY_BASE}/resources
