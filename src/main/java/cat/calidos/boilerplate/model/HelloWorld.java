@@ -29,7 +29,7 @@ public String sleepAndGreet(Duration duration) {
 		interrupted = true;
 	}
 	long end = System.currentTimeMillis();
-	Duration howLong = interrupted ? Duration.ofMillis(end-start) : duration;
+	Duration howLong = interrupted ? Duration.ofMillis(end - start) : duration;
 	return "slept for " + howLong.toSeconds() + " seconds... hello world";
 }
 
