@@ -34,7 +34,7 @@ public class HelloWorldAsnycServlet extends HttpServlet {
 protected final static Logger log = LoggerFactory.getLogger(HelloWorldAsnycServlet.class);
 
 private static final int	SHUTDOWN_TIMEOUT_SEC		= 1;
-private static final int	DEFAULT_REQUEST_TIMEOUT_MS	= 2000;
+private static final int	DEFAULT_REQUEST_TIMEOUT_MS	= 10_000;
 
 private ExecutorService	executorService;
 private int				timeout;

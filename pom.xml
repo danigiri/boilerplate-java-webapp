@@ -65,6 +65,8 @@
 				<directory>${project.basedir}/src/main/resources</directory>
 				<excludes> <!-- ignore code formatting and do not copy it -->
 					<exclude>jdt-codeformat.xml</exclude>
+					<!-- we do not filter these, though we could-->
+					<exclude>docker</exclude>
 				</excludes>
 			</resource>
 		</resources>

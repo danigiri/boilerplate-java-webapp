@@ -36,7 +36,7 @@ public void testAsyncGreeting() throws Exception {
 
 @Test
 public void testAsyncGreetingWithTimeout() throws Exception {
-	var response = get(3); // default request timeout is 2 sec
+	var response = get(3); // default request timeout is like 10 sec
 	assertEquals(200, response.status());
 	assertEquals("hello timed out world", response.content().trim());
 
