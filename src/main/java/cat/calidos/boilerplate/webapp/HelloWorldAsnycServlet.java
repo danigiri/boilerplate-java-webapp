@@ -45,6 +45,7 @@ public void init(ServletConfig config) throws ServletException {
 
 	this.executorService = Executors.newFixedThreadPool(2);
 	this.timeout = DEFAULT_REQUEST_TIMEOUT_MS;
+	log.info("Initialised async servlet {}", HelloWorldAsnycServlet.class.getName());
 }
 
 

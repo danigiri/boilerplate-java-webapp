@@ -63,7 +63,7 @@
 		<resources>
 			<resource>
 				<directory>${project.basedir}/src/main/resources</directory>
-				<excludes> <!-- ignore code formatting -->
+				<excludes> <!-- ignore code formatting and do not copy it -->
 					<exclude>jdt-codeformat.xml</exclude>
 				</excludes>
 			</resource>

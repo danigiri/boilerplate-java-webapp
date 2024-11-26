@@ -2,6 +2,10 @@ package cat.calidos.boilerplate.webapp;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +15,17 @@ import cat.calidos.boilerplate.model.HelloWorld;
 
 
 public class HelloWorldServlet extends HttpServlet {
+
+protected final static Logger log = LoggerFactory.getLogger(HelloWorldServlet.class);
+
+@Override
+public void init(ServletConfig config) throws ServletException {
+	super.init(config);
+
+	log.info("Initialised async servlet {}", HelloWorldServlet.class.getName());
+
+}
+
 
 protected void doGet(	HttpServletRequest request,
 						HttpServletResponse response)
