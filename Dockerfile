@@ -46,10 +46,10 @@ FROM eclipse-temurin:21 AS main
 ENV JETTY_HOME /var/lib/jetty
 ENV JETTY_URL https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-home/12.0.15/jetty-home-12.0.15.tar.gz
 ARG JETTY_BASE=/jetty-base
-ARG REQUEST_TIMEOUT_MS
-ENV __REQUEST_TIMEOUT_MS=${REQUEST_TIMEOUT_MS}
-ARG ASYNC_THREAD_COUNT
-ENV __ASYNC_THREAD_COUNT=${ASYNC_THREAD_COUNT}
+ARG __REQUEST_TIMEOUT_MS
+ENV __REQUEST_TIMEOUT_MS=${__REQUEST_TIMEOUT_MS}
+ARG __ASYNC_THREAD_COUNT
+ENV __ASYNC_THREAD_COUNT=${__ASYNC_THREAD_COUNT}
 
 # install any further runtime dependency packages here
 # RUN apt-get install 

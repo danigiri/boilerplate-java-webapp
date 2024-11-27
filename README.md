@@ -61,6 +61,8 @@ docker build -t hello-world \
 docker run --rm -p 8080:8080 hello-world
 ```
 
+Be aware that configuration env vars are being sent empty into the container, if you want them completely unset, comment them out in the dockerfile
+
 
 #### Releasing source
 
