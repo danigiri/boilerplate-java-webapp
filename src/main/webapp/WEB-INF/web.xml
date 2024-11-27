@@ -4,7 +4,16 @@
 	metadata-complete="false" version="6.0">
 	<!-- see https://jakarta.ee/xml/ns/jakartaee/#10 -->
 
-
+	<context-param>
+		<description>How many threads do async servlets have</description>
+		<param-name>__ASYNC_THREAD_COUNT</param-name>
+		<param-value>2</param-value>
+	</context-param>
+	<context-param>
+		<description>How many milliseconds to wait for async request before timing out</description>
+		<param-name>__REQUEST_TIMEOUT_MS</param-name>
+		<param-value>2001</param-value>
+	</context-param>
 
 	<servlet>
 		<servlet-name>Hello</servlet-name>

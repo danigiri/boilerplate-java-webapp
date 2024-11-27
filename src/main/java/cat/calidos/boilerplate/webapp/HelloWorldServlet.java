@@ -21,15 +21,14 @@ protected final static Logger log = LoggerFactory.getLogger(HelloWorldServlet.cl
 @Override
 public void init(ServletConfig config) throws ServletException {
 	super.init(config);
-
-	log.info("Initialised async servlet {}", HelloWorldServlet.class.getName());
-
+	log.info("Initialised regular servlet – {}", HelloWorldServlet.class.getName());
 }
 
 
 protected void doGet(	HttpServletRequest request,
 						HttpServletResponse response)
 		throws ServletException, IOException {
+	log.debug("Handling sync request '{}' with context '{}'", request.getPathInfo());
 	response.setContentType("text/html");
 	response.setStatus(HttpServletResponse.SC_OK);
 	response.getWriter().println(HelloWorld.staticGreeting());

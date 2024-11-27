@@ -1,5 +1,5 @@
 # boilerplate-java-webapp
-Boilerplate for java webapp using maven and jetty
+Boilerplate for java webapp using Maven and Jetty
 
 
 #### Installing
@@ -7,7 +7,18 @@ Boilerplate for java webapp using maven and jetty
 Upgrade depdencies (optional):
 
 
+List dependencies:
 
+```shell
+ mvn org.apache.maven.plugins:maven-dependency-plugin:3.8.1:tree
+```
+
+### Configuration
+
+- `__REQUEST_TIMEOUT_MS`: How many threads do async servlets have
+- `__ASYNC_THREAD_COUNT`: How many milliseconds to wait for async request before timing out
+
+Can be changed in `web.xml`, set as `-D` java properties, or as env vars, each of those will override
 
 #### Compilation
 
@@ -27,7 +38,7 @@ mvn test
 Manually testing async servlet (many of the requests will time out):
 
 ```shell
-mvn compile jetty:run
+mvn compile jetty:run -D__REQUEST_TIMEOUT_MS=10000
 # on separate window
 for i in `seq 10`; do curl http://localhost:8080/async-hello/\?seconds\=1 & echo ''; done
 ```
@@ -40,13 +51,14 @@ mvn verify
 
 ### Docker
 
-Note this example uses a Maven Central mirror, remove the buid arg and the extra host to use Maven Centrall
+Note this example uses a Maven Central mirror, remove the buid arg and the extra host to use Maven Central directly
 
 ```shell
 docker build -t hello-world \
   --build-arg MAVEN_CENTRAL_MIRROR=http://reposilite.h0.local.test/maven-central \
   --add-host=reposilite.h0.local.test:192.168.1.31 \
   .
+docker run --rm -p 8080:8080 hello-world
 ```
 
 

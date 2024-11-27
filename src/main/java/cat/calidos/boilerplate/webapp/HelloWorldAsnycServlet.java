@@ -3,6 +3,8 @@ package cat.calidos.boilerplate.webapp;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.Duration;
+import java.util.Enumeration;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -15,12 +17,14 @@ import jakarta.servlet.AsyncContext;
 import jakarta.servlet.AsyncEvent;
 import jakarta.servlet.AsyncListener;
 import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import cat.calidos.boilerplate.model.HelloWorld;
+import cat.calidos.boilerplate.util.injection.DaggerConfigPropertyComponent;
 
 
 /**
@@ -33,8 +37,12 @@ public class HelloWorldAsnycServlet extends HttpServlet {
 
 protected final static Logger log = LoggerFactory.getLogger(HelloWorldAsnycServlet.class);
 
+private static final int	DEFAULT_THREAD_COUNT		= 2;
 private static final int	SHUTDOWN_TIMEOUT_SEC		= 1;
-private static final int	DEFAULT_REQUEST_TIMEOUT_MS	= 10_000;
+private static final int	DEFAULT_REQUEST_TIMEOUT_MS	= 2_000;
+
+private static final String	THREAD_COUNT_NAME		= "__ASYNC_THREAD_COUNT";
+private static final String	REQUEST_TIMEOUT_NAME	= "__REQUEST_TIMEOUT_MS";
 
 private ExecutorService	executorService;
 private int				timeout;
@@ -43,9 +51,12 @@ private int				timeout;
 public void init(ServletConfig config) throws ServletException {
 	super.init(config);
 
-	this.executorService = Executors.newFixedThreadPool(2);
-	this.timeout = DEFAULT_REQUEST_TIMEOUT_MS;
-	log.info("Initialised async servlet {}", HelloWorldAsnycServlet.class.getName());
+	Properties p = extractParameters(config);
+	int threadPoolCount = getConfigInt(p, THREAD_COUNT_NAME, DEFAULT_THREAD_COUNT);
+	this.executorService = Executors.newFixedThreadPool(threadPoolCount);
+	this.timeout = getConfigInt(p, REQUEST_TIMEOUT_NAME, DEFAULT_REQUEST_TIMEOUT_MS);
+	;
+	log.info("Initialised async servlet – {}", HelloWorldAsnycServlet.class.getName());
 }
 
 
@@ -62,12 +73,10 @@ protected void doGet(	HttpServletRequest req,
 	// req.setAttribute(ORIGINAL_PATH_INFO, req.getPathInfo());
 
 	// the fixed thread pool itself includes a unbounded queue, which means handlers will get queued
-	// and de-queued automagically
-	log
-			.debug(
-					"Handling async request '{}' with context '{}'",
-					req.getPathInfo(),
-					context.hashCode());
+	// and de-queued automagically as threads become available
+	String pathInfo = req.getPathInfo();
+	int contexHash = context.hashCode();
+	log.debug("Handling async request '{}' with context '{}'", pathInfo, contexHash);
 	Future<?> future = executorService.submit(new HelloAsyncRequestHandler(context));
 }
 
@@ -94,6 +103,59 @@ public void destroy() {
 		log.error("Interrupted awaiting completion of pending tasks, forcing shutdown");
 		e.printStackTrace();
 	}
+}
+
+
+private Properties extractParameters(ServletConfig config) {
+	var p = new Properties();
+	ServletContext context = config.getServletContext();
+	Enumeration<String> names = context.getInitParameterNames();
+	addParameters(context, p, names);
+	names = config.getInitParameterNames();
+	addParameters(config, p, names);
+	return p;
+}
+
+
+private void addParameters(	ServletContext context,
+							Properties p,
+							Enumeration<String> names) {
+	while (names.hasMoreElements()) {
+		String name = names.nextElement();
+		String value = context.getInitParameter(name);
+		if (value != null) {
+			p.setProperty(name, value);
+		}
+	}
+}
+
+
+private void addParameters(	ServletConfig config,
+							Properties p,
+							Enumeration<String> names) {
+	while (names.hasMoreElements()) {
+		String name = names.nextElement();
+		String value = config.getInitParameter(name);
+		if (value != null) {
+			p.setProperty(name, value);
+		}
+	}
+}
+
+
+private int getConfigInt(	Properties p,
+							String key,
+							int defaultValue) {
+	Integer value = DaggerConfigPropertyComponent
+			.builder()
+			.withProps(p)
+			.forName(key)
+			.andDefault(defaultValue)
+			.build()
+			.integerValue()
+			.get();
+	log.info("Configuring async servlet for {} with '{}'", key, value);
+	return value;
 }
 
 private final class HelloAsyncRequestHandler implements Runnable {
