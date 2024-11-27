@@ -24,7 +24,7 @@
 		<jetty-context-path>/</jetty-context-path>
 
 		<!-- DEPENDENCY INJECTION: DAGGER2 -->
-		<dagger-2-version>2.51.1</dagger-2-version>
+		<dagger-2-version>2.52</dagger-2-version>
 
 		<!-- TEMPLATING -->
 		<freemarker-version>2.3.33</freemarker-version>
@@ -63,7 +63,7 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
-				<excludes> <!-- not copied, not filtered --> 
+				<excludes> <!-- not copied, not filtered -->
 					<exclude>jdt-codeformat.xml</exclude>
 					<exclude>docker/**</exclude>
 					<exclude>jetty/**</exclude>
@@ -225,14 +225,14 @@
 					<java>
 						<eclipse>
 							<file>
-								${project.basedir}/src/main/resources/jdt-codeformat.xml</file>
+								${project.basedir}/src/main/resources/editor/jdt-codeformat.xml</file>
 						</eclipse>
 						<removeUnusedImports />
 					</java>
 				</configuration>
 				<executions>
 					<execution>
-						<goals>	<!-- this will run when verify is invoked -->
+						<goals>	<!-- run spotless when verify is invoked -->
 							<goal>check</goal>
 						</goals>
 					</execution>
@@ -242,6 +242,24 @@
 	</build>
 
 	<dependencies>
+
+		<!-- DEPENDENCY INJECTION -->
+		<dependency>
+			<groupId>com.google.dagger</groupId>
+			<artifactId>dagger</artifactId>
+			<version>${dagger-2-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.dagger</groupId>
+			<artifactId>dagger-producers</artifactId>
+			<version>${dagger-2-version}</version>
+		</dependency>
+		<dependency><!-- (optionals not  in the final WAR archive) -->
+			<groupId>com.google.dagger</groupId>
+			<artifactId>dagger-compiler</artifactId>
+			<version>${dagger-2-version}</version>
+			<optional>true</optional>
+		</dependency>
 
 		<!-- UNIT TESTING -->
 		<dependency>
@@ -256,7 +274,6 @@
 			<version>${mockito-version}</version>
 			<scope>test</scope>
 		</dependency>
-
 
 		<!-- JETTY RUNTIME -->
 		<dependency>

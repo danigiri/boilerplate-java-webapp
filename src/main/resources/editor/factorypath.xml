@@ -1,0 +1,36 @@
+
+<factorypath>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/com/google/dagger/dagger-compiler/2.52/dagger-compiler-2.52.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/com/google/dagger/dagger/2.52/dagger-2.52.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/jakarta/inject/jakarta.inject-api/2.0.1/jakarta.inject-api-2.0.1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/javax/inject/javax.inject/1/javax.inject-1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/com/google/dagger/dagger-producers/2.52/dagger-producers-2.52.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/org/checkerframework/checker-qual/3.41.0/checker-qual-3.41.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/com/google/errorprone/error_prone_annotations/2.28.0/error_prone_annotations-2.28.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository//com/google/j2objc/j2objc-annotations/2.8/j2objc-annotations-2.8.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository//org/checkerframework/checker-compat-qual/2.5.5/checker-compat-qual-2.5.5.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository//com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository//com/google/devtools/ksp/symbol-processing-api/1.9.24-1.0.20/symbol-processing-api-1.9.24-1.0.20.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository//org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.9.0/kotlin-stdlib-jdk8-1.9.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository//org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.9.0/kotlin-stdlib-jdk7-1.9.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository//com/google/googlejavaformat/google-java-format/1.5/google-java-format-1.5.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository//com/google/errorprone/javac-shaded/9-dev-r4023-3/javac-shaded-9-dev-r4023-3.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository//com/squareup/javapoet/1.13.0/javapoet-1.13.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository//net/ltgt/gradle/incap/incap/0.2/incap-0.2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/com/google/dagger/dagger-spi/2.52/dagger-spi-2.52.jar" enabled="true" runInBatchMode="false"/>
+	<factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/com/google/devtools/ksp/symbol-processing-api/1.9.24-1.0.20/symbol-processing-api-1.9.24-1.0.20.jar" enabled="true" runInBatchMode="false"/>   
+	<factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.9.24/kotlin-stdlib-1.9.24.jar" enabled="true" runInBatchMode="false"/>   
+</factoryath>
+<!-- 
+Downloading from reposilite: http://reposilite.h0.local.test/maven-central/com/google/dagger/dagger-compiler/2.52/dagger-compiler-2.52.pom                                                                                                  
+Downloading from reposilite: http://reposilite.h0.local.test/maven-central/com/google/dagger/dagger/2.52/dagger-2.52.pom                                                                                 
+Downloading from reposilite: http://reposilite.h0.local.test/maven-central/com/google/dagger/dagger-spi/2.52/dagger-spi-2.52.jar
+Downloading from reposilite: http://reposilite.h0.local.test/maven-central/com/google/devtools/ksp/symbol-processing-api/1.9.24-1.0.20/symbol-processing-api-1.9.24-1.0.20.pom                                                              
+Downloading from reposilite: http://reposilite.h0.local.test/maven-central/org/jetbrains/kotlin/kotlin-stdlib/1.9.24/kotlin-stdlib-1.9.24.pom                                            
+Downloading from reposilite: http://reposilite.h0.local.test/maven-central/com/google/devtools/ksp/symbol-processing-api/1.9.24-1.0.20/symbol-processing-api-1.9.24-1.0.20.jar
+Downloading from reposilite: http://reposilite.h0.local.test/maven-central/org/jetbrains/kotlin/kotlin-stdlib/1.9.24/kotlin-stdlib-1.9.24.jar
+
+ -->
