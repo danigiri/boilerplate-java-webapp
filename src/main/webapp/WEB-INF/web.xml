@@ -14,25 +14,43 @@
 		<param-name>__REQUEST_TIMEOUT_MS</param-name>
 		<param-value>2001</param-value>
 	</context-param>
+	<context-param>
+		<description>How many seconds to wait for async requests to finish in shutdown</description>
+		<param-name>__SHUTDOWN_TIMEOUT_SEC</param-name>
+		<param-value>1</param-value>
+	</context-param>
 
 	<servlet>
 		<servlet-name>Hello</servlet-name>
 		<servlet-class>cat.calidos.boilerplate.webapp.HelloWorldServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+
 	<servlet-mapping>
 		<servlet-name>Hello</servlet-name>
 		<url-pattern>/hello/*</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>AsyncHello</servlet-name>
-		<servlet-class>cat.calidos.boilerplate.webapp.HelloWorldAsnycServlet</servlet-class>
+		<servlet-name>ThreadAsyncHello</servlet-name>
+		<servlet-class>cat.calidos.boilerplate.webapp.ThreadAsnycServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 		<async-supported>true</async-supported>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>AsyncHello</servlet-name>
+		<servlet-name>ThreadAsyncHello</servlet-name>
 		<url-pattern>/async-hello/*</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>VirtualThreadHello</servlet-name>
+		<servlet-class>cat.calidos.boilerplate.webapp.VirtualThreadAsyncServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>VirtualThreadHello</servlet-name>
+		<url-pattern>/vt-hello/*</url-pattern>
+	</servlet-mapping>
+
 
 </web-app>

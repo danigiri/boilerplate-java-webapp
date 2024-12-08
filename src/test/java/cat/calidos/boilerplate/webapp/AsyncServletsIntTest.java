@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 
-public class HelloWorldAsyncServletIntTest {
+public class AsyncServletsIntTest {
 
 private static HttpClient httpClient;
 
@@ -27,16 +27,25 @@ public static void beforeAll() throws Exception {
 
 
 @Test
-public void testAsyncGreeting() throws Exception {
-	var response = get(1);
+public void testThreadAsyncGreeting() throws Exception {
+	var response = get("/async-hello", 1);
+	assertEquals(200, response.status());
+	assertEquals("slept for 1 seconds... hello world", response.content().trim());
+}
+
+
+
+@Test
+public void testVirtualThreadAsyncGreeting() throws Exception {
+	var response = get("/vt-hello", 1);
 	assertEquals(200, response.status());
 	assertEquals("slept for 1 seconds... hello world", response.content().trim());
 }
 
 
 @Test
-public void testAsyncGreetingWithTimeout() throws Exception {
-	var response = get(3); // default request timeout is like 2 sec
+public void testThreadAsyncGreetingWithTimeout() throws Exception {
+	var response = get("/async-hello", 3); // default request timeout is like 2 sec
 	assertEquals(200, response.status());
 	assertEquals("hello timed out world", response.content().trim());
 
@@ -45,8 +54,8 @@ public void testAsyncGreetingWithTimeout() throws Exception {
 private record HelloWorldServletIntTestResponse(String content, int status) {
 };
 
-private static HelloWorldServletIntTestResponse get(int secs) throws Exception {
-	ContentResponse response = httpClient.GET("http://localhost:8080/async-hello?seconds=" + secs);
+private static HelloWorldServletIntTestResponse get(String endpoint, int secs) throws Exception {
+	ContentResponse response = httpClient.GET("http://localhost:8080"+endpoint+"?seconds=" + secs);
 	String content = response.getContentAsString();
 	int status = response.getStatus();
 

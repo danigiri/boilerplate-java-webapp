@@ -2,6 +2,12 @@
 Boilerplate for java webapp using Maven and Jetty
 
 
+## ENDPOINTS
+
+
+
+## DEVELOPMENT
+
 #### Installing
 
 Upgrade depdencies (optional):
@@ -17,6 +23,7 @@ List dependencies:
 
 - `__REQUEST_TIMEOUT_MS`: How many threads do async servlets have
 - `__ASYNC_THREAD_COUNT`: How many milliseconds to wait for async request before timing out
+- `__SHUTDOWN_TIMEOUT_SEC`: How many seconds to wait for async requests to finish in shutdown
 
 Can be changed in `web.xml`, set as `-D` java properties, or as env vars, each of those will override
 
@@ -35,13 +42,16 @@ Run tests:
 mvn test
 ```
 
-Manually testing async servlet (many of the requests will time out):
+Manually testing thread async servlet:
 
 ```shell
 mvn compile jetty:run -D__REQUEST_TIMEOUT_MS=10000
 # on separate window
 for i in `seq 10`; do curl http://localhost:8080/async-hello/\?seconds\=1 & echo ''; done
 ```
+
+Manually testing virtual thread servlet
+for i in `seq 10`; do curl http://localhost:8080/vt-hello/\?seconds\=1 & echo ''; done
 
 
 #### Integration testing
@@ -61,7 +71,7 @@ docker build -t hello-world \
 docker run --rm -p 8080:8080 hello-world
 ```
 
-Be aware that configuration env vars are being sent empty into the container, if you want them completely unset, comment them out in the dockerfile
+Be aware that if not set, configuration env vars are being sent empty into the container, if you want them completely unset, comment them out in the dockerfile
 
 
 #### Releasing source

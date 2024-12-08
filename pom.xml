@@ -32,6 +32,9 @@
 		<!-- JSON HANDLING -->
 		<jackson-2-version>2.17.2</jackson-2-version>
 
+		<!-- UTILITIES -->
+		<commons-io-version>2.18.0</commons-io-version>
+
 		<!-- TESTING -->
 		<jupiter-version>5.11.3</jupiter-version>
 		<mockito-version>5.14.2</mockito-version>
@@ -296,7 +299,14 @@
 			<version>${jetty-version}</version>
 		</dependency>
 
-		<!-- logging -->
+		<!-- UTILS -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io-version}</version>
+		</dependency>
+
+		<!-- LOGGING -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-slf4j-impl</artifactId>
