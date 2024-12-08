@@ -23,7 +23,7 @@
     <factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/com/google/dagger/dagger-spi/2.52/dagger-spi-2.52.jar" enabled="true" runInBatchMode="false"/>
 	<factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/com/google/devtools/ksp/symbol-processing-api/1.9.24-1.0.20/symbol-processing-api-1.9.24-1.0.20.jar" enabled="true" runInBatchMode="false"/>   
 	<factorypathentry kind="EXTJAR" id="/Users/dani/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.9.24/kotlin-stdlib-1.9.24.jar" enabled="true" runInBatchMode="false"/>   
-</factoryath>
+</factorypath>
 <!-- 
 Downloading from reposilite: http://reposilite.h0.local.test/maven-central/com/google/dagger/dagger-compiler/2.52/dagger-compiler-2.52.pom                                                                                                  
 Downloading from reposilite: http://reposilite.h0.local.test/maven-central/com/google/dagger/dagger/2.52/dagger-2.52.pom                                                                                 
