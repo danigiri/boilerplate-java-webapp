@@ -6,19 +6,19 @@ import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 
 
-
-/** Async servlet that uses unbounded virtual threads
-*	@author daniel giribet
-*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * Async servlet that uses unbounded virtual threads
+ * 
+ * @author daniel giribet
+ *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class VirtualThreadAsyncServlet extends ThreadAsnycServlet {
-
 
 @Override
 public void init(ServletConfig config) throws ServletException {
 	super.init(config);
 
 	executorService = Executors.newVirtualThreadPerTaskExecutor();
-	log.info("Initialised async servlet – {}", ThreadAsnycServlet.class.getName());
+	log.info("{}: Initialised virtual thread async servlet", config.getServletName());
 }
 
 }
@@ -36,4 +36,3 @@ public void init(ServletConfig config) throws ServletException {
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-

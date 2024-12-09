@@ -29,9 +29,10 @@ public void init(ServletConfig config) throws ServletException {
 	super.init(config);
 
 	requestTimeout = getConfigInt(properties, REQUEST_TIMEOUT_NAME, DEFAULT_REQUEST_TIMEOUT_MS);
-	shutdownTimeout = getConfigInt(properties, REQUEST_TIMEOUT_NAME, DEFAULT_SHUTDOWN_TIMEOUT_SEC);
+	shutdownTimeout = getConfigInt(properties, SHUTDOWN_TIMEOUT_NAME, DEFAULT_SHUTDOWN_TIMEOUT_SEC);
 	String name = config.getServletName();
-	log.info("Configuring servlet {} with {}='{}'", name, REQUEST_TIMEOUT_NAME, requestTimeout);
+	log.info("{}: Configuring with {}='{}'", name, REQUEST_TIMEOUT_NAME, requestTimeout);
+	log.info("{}: Configuring with {}='{}'", name, SHUTDOWN_TIMEOUT_NAME, shutdownTimeout);
 
 }
 

@@ -32,10 +32,10 @@ private static final String	THREAD_COUNT_NAME		= "__ASYNC_THREAD_COUNT";
 public void init(ServletConfig config) throws ServletException {
 	super.init(config);
 
+	String name = config.getServletName();
 	int threadPoolCount = getConfigInt(properties, THREAD_COUNT_NAME, DEFAULT_THREAD_COUNT);
-	log.info("Configuring async servlet with {}='{}'", THREAD_COUNT_NAME, threadPoolCount);
+	log.info("{}: Configuring with {}='{}'", name, THREAD_COUNT_NAME, threadPoolCount);
 	executorService = Executors.newFixedThreadPool(threadPoolCount);
-	log.info("Initialised async servlet – {}", ThreadAsnycServlet.class.getName());
 }
 
 
@@ -57,7 +57,7 @@ protected void doGet(	HttpServletRequest req,
 	String pathInfo = req.getPathInfo();
 	int contexHash = context.hashCode();
 	log.debug("Handling async request '{}' with context '{}'", pathInfo, contexHash);
-	Future<?> future = executorService.submit(handler);
+	Future<?> _future = executorService.submit(handler);
 }
 
 

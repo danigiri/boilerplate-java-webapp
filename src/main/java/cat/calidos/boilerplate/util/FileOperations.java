@@ -11,11 +11,13 @@ import cat.calidos.boilerplate.domain.exceptions.SavingException;
 
 
 /**
- * Save a stream into a file, useful for uploads
+ * File utilities:
+ * - Save a stream into a file, useful for uploads
+ * - remove file
  * 
  * @author daniel giribet
  *//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-public class StreamSaver {
+public class FileOperations {
 
 /**
  * Save a stream to a local file, Important: Needs to be closed, use inside a try with resources

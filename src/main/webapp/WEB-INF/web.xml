@@ -52,5 +52,23 @@
 		<url-pattern>/vt-hello/*</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>Save</servlet-name>
+		<servlet-class>cat.calidos.boilerplate.webapp.PostSaveServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+		<init-param>
+			<description>Path prefix to save files, ends with slash</description>
+			<param-name>__SAVE_PREFIX</param-name>
+			<param-value>./</param-value>
+		</init-param>
+		<init-param>
+		<description>Save filename, does not start with slash</description>
+		<param-name>__SAVE_FILENAME</param-name>
+		<param-value>foo.txt</param-value>
+		</init-param>
+	</servlet>
+
+
+
 
 </web-app>

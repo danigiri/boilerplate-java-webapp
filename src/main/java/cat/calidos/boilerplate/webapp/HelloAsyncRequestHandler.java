@@ -7,14 +7,18 @@ import java.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cat.calidos.boilerplate.model.HelloWorld;
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.AsyncEvent;
 import jakarta.servlet.AsyncListener;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import cat.calidos.boilerplate.model.HelloWorld;
+
+
 final class HelloAsyncRequestHandler implements AsyncRequestHandlerRunnable {
+
+private static final int DEFAULT_SLEEP = 1;
 
 protected final static Logger log = LoggerFactory.getLogger(HelloAsyncRequestHandler.class);
 
@@ -37,27 +41,27 @@ public void run() {
 		seconds = Integer.parseInt(secondsParam);
 	} catch (NumberFormatException e) {
 		log.warn("Wrong seconds param '{}', using default", secondsParam);
-		seconds = 1;
+		seconds = DEFAULT_SLEEP;
 	}
 	try {
+		resp.setContentType("text/plain");
 		String message = new HelloWorld().sleepAndGreet(Duration.ofSeconds(seconds));
+		resp.setStatus(HttpServletResponse.SC_OK);
 		resp.getWriter().write(message);
 	} catch (IOException e) {
 		log.error("Could not write message due to " + e.getMessage(), e);
+		resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		e.printStackTrace();
 	}
 	context.complete();
 }
 
-public  AsyncListener getAsyncListener() {
-	return new HelloAsyncListener();
-}
 
+public AsyncListener getAsyncListener() { return new HelloAsyncListener(); }
 
 private class HelloAsyncListener implements AsyncListener {
 
 protected final static Logger log = LoggerFactory.getLogger(HelloAsyncListener.class);
-
 
 public HelloAsyncListener() {
 }
@@ -92,4 +96,3 @@ public void onStartAsync(AsyncEvent event) throws IOException {
 }
 
 }
-

@@ -2,8 +2,6 @@ package cat.calidos.boilerplate.webapp;
 
 import java.util.Enumeration;
 import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
@@ -12,9 +10,12 @@ import jakarta.servlet.http.HttpServlet;
 
 import cat.calidos.boilerplate.util.injection.DaggerConfigPropertyComponent;
 
-/** Simple configurable servlet
-*	@author daniel giribet
-*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Simple configurable servlet
+ * 
+ * @author daniel giribet
+ *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class ConfigurableServlet extends HttpServlet {
 
 Properties properties;
@@ -24,6 +25,7 @@ public void init(ServletConfig config) throws ServletException {
 	super.init(config);
 	properties = extractParameters(config);
 }
+
 
 protected Properties extractParameters(ServletConfig config) {
 	var p = new Properties();
@@ -76,6 +78,18 @@ protected int getConfigInt(	Properties p,
 }
 
 
+protected String getConfigStr(	Properties p,
+								String key,
+								String defaultValue) {
+	return DaggerConfigPropertyComponent
+			.builder()
+			.withProps(p)
+			.forName(key)
+			.andDefault(defaultValue)
+			.build()
+			.stringValue()
+			.get();
+}
 
 }
 
@@ -92,4 +106,3 @@ protected int getConfigInt(	Properties p,
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-

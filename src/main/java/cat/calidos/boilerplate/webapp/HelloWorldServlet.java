@@ -7,29 +7,28 @@ import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import cat.calidos.boilerplate.model.HelloWorld;
 
 
-public class HelloWorldServlet extends HttpServlet {
+public class HelloWorldServlet extends ConfigurableServlet {
 
 protected final static Logger log = LoggerFactory.getLogger(HelloWorldServlet.class);
 
 @Override
 public void init(ServletConfig config) throws ServletException {
 	super.init(config);
-	log.info("Initialised regular servlet – {}", HelloWorldServlet.class.getName());
+	log.info("{}: Initialised regular servlet", config.getServletName());
 }
 
 
 protected void doGet(	HttpServletRequest request,
 						HttpServletResponse response)
 		throws ServletException, IOException {
-	log.debug("Handling sync request '{}' with context '{}'", request.getPathInfo());
-	response.setContentType("text/html");
+	log.debug("Handling sync request '{}'", request.getPathInfo());
+	response.setContentType("text/plain");
 	response.setStatus(HttpServletResponse.SC_OK);
 	response.getWriter().println(HelloWorld.staticGreeting());
 }
