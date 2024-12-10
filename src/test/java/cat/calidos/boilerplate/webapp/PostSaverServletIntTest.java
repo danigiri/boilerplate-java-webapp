@@ -2,14 +2,22 @@ package cat.calidos.boilerplate.webapp;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
+import java.nio.charset.Charset;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.client.ContentResponse;
 import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.client.Request;
+import org.eclipse.jetty.client.StringRequestContent;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 
-public class HelloWorldServletIntTest {
+public class PostSaverServletIntTest {
 
 private static HttpClient httpClient;
 
@@ -23,35 +31,22 @@ public static void beforeAll() throws Exception {
 
 	// Start HttpClient.
 	httpClient.start();
-
 }
 
 
 @Test
-public void testGreeting() throws Exception {
+public void testPost() throws Exception {
+	var content = "foo"+Math.random();
+	ContentResponse resp = httpClient
+			.POST("http://localhost:8080/save/")
+			.body(new StringRequestContent(content))
+			.send();
+	assertEquals(200, resp.getStatus());
+	assertEquals("Content saved",resp.getContentAsString().trim());
 
-	var response = get();
-	assertEquals(200, response.status());
-	assertEquals("hello static world", response.content().trim());
-	assertEquals("text/plain", response.mime());
-
-}
-
-private record ServletIntTestResponse(String content, int status, String mime) {
-};
-
-private static ServletIntTestResponse get() throws Exception {
-
-	ContentResponse response = httpClient.GET("http://localhost:8080/hello");
-	String content = response.getContentAsString();
-	int status = response.getStatus();
-	String mime = response.getMediaType();
-
-	// ContentResponse response = httpClient.POST("http://domain.com/entity/1")
-	// .param("p", "value")
-	// .send();
-	return new ServletIntTestResponse(content, status, mime);
-
+	File file = new File("./target/foo.txt");
+	assertTrue(file.exists());
+	assertEquals(content, FileUtils.readFileToString(file, Charset.defaultCharset()));
 }
 
 
@@ -61,9 +56,7 @@ public static void afterAll() throws Exception {
 		httpClient.close();
 	}
 }
-
 }
-
 /*
  * Copyright 2024 Daniel Giribet
  *

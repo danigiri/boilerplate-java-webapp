@@ -67,8 +67,9 @@
 		<param-value>foo.txt</param-value>
 		</init-param>
 	</servlet>
-
-
-
+	<servlet-mapping>
+		<servlet-name>Save</servlet-name>
+		<url-pattern>/save/*</url-pattern>
+	</servlet-mapping>
 
 </web-app>
