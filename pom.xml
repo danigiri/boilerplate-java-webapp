@@ -23,6 +23,9 @@
 		<jetty-stop-port>8091</jetty-stop-port>
 		<jetty-context-path>/</jetty-context-path>
 
+		<!-- CLI -->
+		<picocli-version>4.7.6</picocli-version>
+
 		<!-- DEPENDENCY INJECTION: DAGGER2 -->
 		<dagger-2-version>2.52</dagger-2-version>
 
@@ -122,9 +125,7 @@
 			</plugin>
 
 			<!-- ////////// PACKAGE PHASE /////////////////// -->
-			<plugin>	<!--
-				mvn package war:war install -DarchiveClasses=true
-				-DattachClasses=true -DskipITs -DskipTests=true -Djetty.skip -->
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.4.0</version>
@@ -141,6 +142,31 @@
 					<attachClasses>true</attachClasses>
 				</configuration>
 			</plugin>
+
+			<plugin> <!-- command line interface -->
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.7.1</version>
+				<configuration>
+					<descriptorRefs> <!-- note classes are in WEB-INF due to war packaging -->
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>cat.calidos.boilerplate.cli.HelloWorldCLI</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- used for inheritance merges -->
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 
 			<!-- ////////// INTEGRATION-TEST PHASES ///////// -->
 			<plugin> <!-- this ensures they are set before jetty starts -->
@@ -311,6 +337,13 @@
 			<artifactId>jakarta.servlet-api</artifactId>
 			<version>${servlet-api-version}</version>
 			<scope>provided</scope>
+		</dependency>
+
+		<!-- CLI RUNTIME -->
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<version>${picocli-version}</version>
 		</dependency>
 
 		<!-- HTTP CLIENT -->

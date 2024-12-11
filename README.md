@@ -2,7 +2,32 @@
 Boilerplate for java webapp using Maven and Jetty
 
 
-## ENDPOINTS
+## RUNNING
+
+
+### Docker
+
+Note this example uses a Maven Central mirror, remove the buid arg and the extra host to use Maven Central directly
+
+```shell
+docker build -t hello-world \
+  --build-arg MAVEN_CENTRAL_MIRROR=http://reposilite.h0.local.test/maven-central \
+  --add-host=reposilite.h0.local.test:192.168.1.31 \
+  .
+docker run --rm -p 8080:8080 hello-world
+```
+
+Be aware that if not set, configuration env vars are being sent empty into the container, if you want them completely unset, comment them out in the dockerfile
+
+
+### Cli
+
+Creating an complete jar to execute as a cli (from project folder):
+
+```shell
+alias HelloWorldCLI="java -cp "$(ls -1 $PWD/target/*-classes.jar)":"$(ls -1 $PWD/target/*-jar-with-dependencies.jar)" cat.calidos.boilerplate.cli.HelloWorldCLI"
+HelloWorldCLI 'from CLI'
+```
 
 
 
@@ -58,20 +83,6 @@ for i in `seq 10`; do curl http://localhost:8080/vt-hello/\?seconds\=1 & echo ''
 ```shell
 mvn verify
 ```
-
-### Docker
-
-Note this example uses a Maven Central mirror, remove the buid arg and the extra host to use Maven Central directly
-
-```shell
-docker build -t hello-world \
-  --build-arg MAVEN_CENTRAL_MIRROR=http://reposilite.h0.local.test/maven-central \
-  --add-host=reposilite.h0.local.test:192.168.1.31 \
-  .
-docker run --rm -p 8080:8080 hello-world
-```
-
-Be aware that if not set, configuration env vars are being sent empty into the container, if you want them completely unset, comment them out in the dockerfile
 
 
 #### Releasing source
@@ -130,3 +141,4 @@ Default paths of maven jetty plugin jetty:run:
 - https://jetty.org/docs/jetty/12/programming-guide/client/index.html
 - https://jakarta.ee/learn/docs/jakartaee-tutorial/current/web/webapp/webapp.html
 - https://www.hackerearth.com/practice/notes/asynchronous-servlets-in-java/
+- https://picocli.info/quick-guide.html
