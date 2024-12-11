@@ -10,7 +10,6 @@ import java.util.concurrent.TimeoutException;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.client.ContentResponse;
 import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.Request;
 import org.eclipse.jetty.client.StringRequestContent;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -36,13 +35,14 @@ public static void beforeAll() throws Exception {
 
 @Test
 public void testPost() throws Exception {
-	var content = "foo"+Math.random();
+	var content = "foo" + Math.random();
 	ContentResponse resp = httpClient
 			.POST("http://localhost:8080/save/")
 			.body(new StringRequestContent(content))
 			.send();
 	assertEquals(200, resp.getStatus());
-	assertEquals("Content saved",resp.getContentAsString().trim());
+	assertEquals("Content saved", resp.getContentAsString().trim());
+	assertEquals("text/plain", resp.getMediaType());
 
 	File file = new File("./target/foo.txt");
 	assertTrue(file.exists());
@@ -56,7 +56,9 @@ public static void afterAll() throws Exception {
 		httpClient.close();
 	}
 }
+
 }
+
 /*
  * Copyright 2024 Daniel Giribet
  *
