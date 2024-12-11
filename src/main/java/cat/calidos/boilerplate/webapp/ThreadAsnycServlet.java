@@ -19,6 +19,8 @@ import jakarta.servlet.http.HttpServletResponse;
  * Overall servlet, change HelloAsyncRequestHandler to provide custom logic and the
  * HelloAsyncListener to do timeout logic.
  * 
+ * Uses a fixed configurable number of platform threads
+ * 
  * @author daniel giribet
  *//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class ThreadAsnycServlet extends SimpleAsyncServlet {
@@ -43,7 +45,6 @@ public void init(ServletConfig config) throws ServletException {
 protected void doGet(	HttpServletRequest req,
 						HttpServletResponse resp)
 		throws ServletException, IOException {
-
 	final AsyncContext context = req.startAsync(req, resp);
 	AsyncRequestHandlerRunnable handler = new HelloAsyncRequestHandler(context);
 	context.addListener(handler.getAsyncListener());

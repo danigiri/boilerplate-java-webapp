@@ -10,6 +10,9 @@ import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 
 
+/**
+ * @author daniel giribet
+ *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class SimpleAsyncServlet extends ConfigurableServlet {
 
 protected final static Logger log = LoggerFactory.getLogger(SimpleAsyncServlet.class);
@@ -37,6 +40,7 @@ public void init(ServletConfig config) throws ServletException {
 }
 
 
+// we wait for the configured time for tasks to finish, adter that we forcefully shutdown
 @Override
 public void destroy() {
 	super.destroy();

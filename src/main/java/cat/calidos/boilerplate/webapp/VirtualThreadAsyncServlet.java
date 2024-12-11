@@ -7,7 +7,8 @@ import jakarta.servlet.ServletException;
 
 
 /**
- * Async servlet that uses unbounded virtual threads
+ * Async servlet that uses unbounded virtual threads, see superclass to customise behaviour using
+ * handlers.
  * 
  * @author daniel giribet
  *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

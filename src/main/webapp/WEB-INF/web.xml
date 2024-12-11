@@ -4,6 +4,7 @@
 	metadata-complete="false" version="6.0">
 	<!-- see https://jakarta.ee/xml/ns/jakartaee/#10 -->
 
+	<!-- GLOBAL CONFIGURATION PARAMETERS -->
 	<context-param>
 		<description>How many threads do async servlets have</description>
 		<param-name>__ASYNC_THREAD_COUNT</param-name>
@@ -20,16 +21,17 @@
 		<param-value>1</param-value>
 	</context-param>
 
+	<!-- EXAMPLE SERVLETS -->
 	<servlet>
 		<servlet-name>Hello</servlet-name>
 		<servlet-class>cat.calidos.boilerplate.webapp.HelloWorldServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-
 	<servlet-mapping>
 		<servlet-name>Hello</servlet-name>
 		<url-pattern>/hello/*</url-pattern>
 	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>ThreadAsyncHello</servlet-name>
 		<servlet-class>cat.calidos.boilerplate.webapp.ThreadAsnycServlet</servlet-class>
@@ -71,5 +73,30 @@
 		<servlet-name>Save</servlet-name>
 		<url-pattern>/save/*</url-pattern>
 	</servlet-mapping>
+
+	<!-- REQUEST FILTER EXAMPLE -->
+	<filter>
+		<filter-name>LoginFilter</filter-name>
+		<filter-class>cat.calidos.boilerplate.webapp.LoginFilter</filter-class>
+		<init-param>
+			<param-name>__AUTH_CREDS</param-name>
+			<param-value>configure:me</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<servlet-name>HelloAuth</servlet-name>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+		<servlet>
+		<servlet-name>HelloAuth</servlet-name>
+		<servlet-class>cat.calidos.boilerplate.webapp.HelloWorldServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>HelloAuth</servlet-name>
+		<url-pattern>/hello-auth/*</url-pattern>
+	</servlet-mapping>
+	
 
 </web-app>

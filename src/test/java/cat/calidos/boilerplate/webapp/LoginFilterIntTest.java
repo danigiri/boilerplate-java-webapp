@@ -2,19 +2,19 @@ package cat.calidos.boilerplate.webapp;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.File;
-import java.nio.charset.Charset;
+import java.net.URI;
 
-import org.apache.commons.io.FileUtils;
+import org.eclipse.jetty.client.Authentication;
+import org.eclipse.jetty.client.BasicAuthentication;
 import org.eclipse.jetty.client.ContentResponse;
 import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.StringRequestContent;
+import org.eclipse.jetty.client.Request;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 
-public class PostSaverServletIntTest {
+public class LoginFilterIntTest {
 
 private static HttpClient httpClient;
 
@@ -32,19 +32,26 @@ public static void beforeAll() throws Exception {
 
 
 @Test
-public void testPost() throws Exception {
-	var content = "foo" + Math.random();
-	ContentResponse resp = httpClient
-			.POST("http://localhost:8080/save/")
-			.body(new StringRequestContent(content))
-			.send();
+public void testAuthenticated() throws Exception {
+	URI uri = URI.create("http://localhost:8080/hello-auth/");
+	Authentication.Result authn = new BasicAuthentication.BasicResult(uri, "configure", "me");
+	Request request = httpClient.newRequest(uri);
+	authn.apply(request);
+	ContentResponse resp = request.send();
 	assertEquals(200, resp.getStatus());
-	assertEquals("Content saved", resp.getContentAsString().trim());
+	assertEquals("hello static world", resp.getContentAsString().trim());
 	assertEquals("text/plain", resp.getMediaType());
+}
 
-	File file = new File("./target/foo.txt");
-	assertTrue(file.exists());
-	assertEquals(content, FileUtils.readFileToString(file, Charset.defaultCharset()));
+
+@Test
+public void testNotAuthenticated() throws Exception {
+	URI uri = URI.create("http://localhost:8080/hello-auth/");
+	Authentication.Result authn = new BasicAuthentication.BasicResult(uri, "foo", "bar");
+	Request request = httpClient.newRequest(uri);
+	authn.apply(request);
+	ContentResponse resp = request.send();
+	assertEquals(403, resp.getStatus());
 }
 
 
@@ -54,6 +61,7 @@ public static void afterAll() throws Exception {
 		httpClient.close();
 	}
 }
+
 
 }
 
