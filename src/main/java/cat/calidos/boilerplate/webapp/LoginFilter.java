@@ -84,7 +84,12 @@ public void doFilter(	ServletRequest request,
 		log.debug("Denying request {}", pathInfo);
 		// Stop the filter chain and send a custom response
 		HttpServletResponse resp = (HttpServletResponse) response;
-		resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
+		resp.setContentType("text/plain");
+		resp.getWriter().write("Access denied");
+		resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
+		// the one below defaults to HMTL output
+		// resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
+		// this request basic auth in the error resp
 		// resp.addHeader("WWW-Authenticate", "Basic realm=\"\"");
 
 	}

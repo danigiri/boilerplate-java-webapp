@@ -52,6 +52,8 @@ public void testNotAuthenticated() throws Exception {
 	authn.apply(request);
 	ContentResponse resp = request.send();
 	assertEquals(403, resp.getStatus());
+	assertEquals("Access denied", resp.getContentAsString().trim());
+	assertEquals("text/plain", resp.getMediaType());
 }
 
 
@@ -61,7 +63,6 @@ public static void afterAll() throws Exception {
 		httpClient.close();
 	}
 }
-
 
 }
 
