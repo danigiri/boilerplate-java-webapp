@@ -11,9 +11,7 @@ import cat.calidos.boilerplate.domain.exceptions.SavingException;
 
 
 /**
- * File utilities:
- * - Save a stream into a file, useful for uploads
- * - remove file
+ * File utilities: - Save a stream into a file, useful for uploads - remove file
  * 
  * @author daniel giribet
  *//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

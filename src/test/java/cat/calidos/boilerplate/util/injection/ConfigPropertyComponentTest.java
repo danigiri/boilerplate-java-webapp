@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+
 public class ConfigPropertyComponentTest {
 
 private Properties p;
@@ -154,7 +155,7 @@ public void testConversion() {
 }
 
 
-private Map<String, Object> paramMap(String k,
+private Map<String, Object> paramMap(	String k,
 										String v) {
 	var map = new HashMap<String, Object>(1);
 	map.put(k, v);

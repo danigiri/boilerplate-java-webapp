@@ -30,7 +30,7 @@ public void init(ServletConfig config) throws ServletException {
 	String name = config.getServletName();
 	String pref = getConfigStr(properties, SAVE_PREFIX, DEFAULT_SAVE_PREFIX);
 	String filename = getConfigStr(properties, SAVE_FILENAME, DEFAULT_FILENAME);
-	path = pref+filename;
+	path = pref + filename;
 	log.info("{}: Configuring with path='{}'", name, path);
 	log.info("{}: Initialised regular servlet", name);
 
@@ -49,7 +49,7 @@ protected void doPost(	HttpServletRequest request,
 		response.getWriter().println("Content saved");
 	} catch (SavingException e) {
 		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		response.getWriter().println("Content not saved ("+e.getMessage()+")");
+		response.getWriter().println("Content not saved (" + e.getMessage() + ")");
 	}
 
 }

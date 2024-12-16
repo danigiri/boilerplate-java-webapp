@@ -1,7 +1,6 @@
 package cat.calidos.boilerplate.webapp;
 
 import java.io.IOException;
-import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 

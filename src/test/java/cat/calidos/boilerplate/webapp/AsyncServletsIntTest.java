@@ -34,7 +34,6 @@ public void testThreadAsyncGreeting() throws Exception {
 }
 
 
-
 @Test
 public void testVirtualThreadAsyncGreeting() throws Exception {
 	var response = get("/vt-hello", 1);
@@ -54,8 +53,11 @@ public void testThreadAsyncGreetingWithTimeout() throws Exception {
 private record HelloWorldServletIntTestResponse(String content, int status) {
 };
 
-private static HelloWorldServletIntTestResponse get(String endpoint, int secs) throws Exception {
-	ContentResponse response = httpClient.GET("http://localhost:8080"+endpoint+"?seconds=" + secs);
+private static HelloWorldServletIntTestResponse get(String endpoint,
+													int secs)
+		throws Exception {
+	ContentResponse response = httpClient
+			.GET("http://localhost:8080" + endpoint + "?seconds=" + secs);
 	String content = response.getContentAsString();
 	int status = response.getStatus();
 

@@ -18,12 +18,11 @@ public class HelloWorldCLI implements Callable<Integer> {
 @Option(names = { "-e", "--stderr" }, description = "print on stderr instead")
 boolean stderr = false;
 
-//@Option(names = { "-q", "--quiet" }, description = "do not print anything")
-//boolean quiet = false;
+// @Option(names = { "-q", "--quiet" }, description = "do not print anything")
+// boolean quiet = false;
 
 @Parameters(description = "message to be printed")
 String message;
-
 
 @Override
 public Integer call() throws Exception {

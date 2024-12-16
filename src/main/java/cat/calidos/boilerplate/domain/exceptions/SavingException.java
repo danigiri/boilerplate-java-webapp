@@ -6,6 +6,7 @@ public SavingException(String message) {
 	super(message);
 }
 
+
 public SavingException(String message, Throwable e) {
 	super(message, e);
 }

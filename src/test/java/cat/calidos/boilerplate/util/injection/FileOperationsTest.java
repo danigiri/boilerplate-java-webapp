@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import cat.calidos.boilerplate.domain.exceptions.SavingException;
 import cat.calidos.boilerplate.util.FileOperations;
 
 
